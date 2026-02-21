@@ -38,8 +38,6 @@ export function PreviewPane({ scrollRef, onScroll }: PreviewPaneProps) {
             // Typography customisations
             'prose-headings:font-semibold prose-headings:tracking-tight',
             'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
-            'prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-code:font-mono prose-code:before:content-none prose-code:after:content-none',
-            'prose-pre:bg-transparent prose-pre:p-0',
             'prose-blockquote:border-l-primary',
             'prose-img:rounded-lg',
             'prose-table:overflow-hidden prose-table:rounded-lg',

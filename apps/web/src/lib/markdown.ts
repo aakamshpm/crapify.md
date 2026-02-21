@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
+import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeReact from 'rehype-react'
@@ -65,9 +66,14 @@ function buildProcessor(): any {
     .use(remarkMath)
     .use(remarkRehype, { allowDangerousHtml: false })
     .use(rehypeKatex)
+    .use(rehypeMermaid)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .use(rehypePrettyCode as any, {
+      theme: { light: 'github-light', dark: 'github-dark' },
+      keepBackground: true,
+    })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
-    .use(rehypeMermaid)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .use(rehypeReact as any, {
       Fragment,

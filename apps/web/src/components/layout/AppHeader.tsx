@@ -19,7 +19,7 @@ export function AppHeader() {
       {/* Logo */}
       <div className="flex items-center gap-2">
         <FileText className="h-4 w-4 text-primary" />
-        <span className="text-sm font-semibold tracking-tight">crapify</span>
+        <span className="text-sm font-semibold tracking-tight">crapify.md</span>
       </div>
 
       {/* View mode toggles */}
