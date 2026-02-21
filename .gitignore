@@ -50,3 +50,6 @@ coverage
 # pnpm lock (keep pnpm-lock.yaml, ignore others)
 package-lock.json
 yarn.lock
+vite.config.d.ts
+vite.config.js
+apps/web/dist
