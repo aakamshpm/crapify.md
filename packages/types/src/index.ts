@@ -9,11 +9,5 @@ export type PreviewTheme = 'github' | 'minimal'
 
 // PDF export request (used by NestJS API)
 export interface ExportPdfRequest {
-  html: string
-  title?: string
-}
-
-// PDF export response
-export interface ExportPdfResponse {
-  url: string
+  markdown: string
 }
