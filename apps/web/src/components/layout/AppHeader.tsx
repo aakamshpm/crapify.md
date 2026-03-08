@@ -7,12 +7,15 @@ import {
   PanelLeft,
   PanelRight,
   Download,
+  FileDown,
+  FileCode,
   Loader2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { useEditorStore } from '@/store/editorStore'
+import { downloadMarkdown, downloadHtml } from '@/lib/download'
 import type { ViewMode } from '@crapify/types'
 
 const VIEW_MODES: { mode: ViewMode; icon: React.ReactNode; label: string }[] = [
@@ -26,6 +29,24 @@ export function AppHeader() {
     useEditorStore()
 
   const [exporting, setExporting] = useState(false)
+  const [downloadingHtml, setDownloadingHtml] = useState(false)
+
+  function handleDownloadMarkdown() {
+    if (!content.trim()) return
+    downloadMarkdown(content)
+  }
+
+  async function handleDownloadHtml() {
+    if (downloadingHtml || !content.trim()) return
+    setDownloadingHtml(true)
+    try {
+      await downloadHtml(content)
+    } catch (err) {
+      console.error('HTML download error:', err)
+    } finally {
+      setDownloadingHtml(false)
+    }
+  }
 
   async function handleExportPdf() {
     if (exporting) return
@@ -105,6 +126,38 @@ export function AppHeader() {
         </div>
 
         <Separator orientation="vertical" className="h-5 hidden sm:block" />
+
+        {/* Download Markdown */}
+        <Tooltip content="Download Markdown" side="bottom">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleDownloadMarkdown}
+            disabled={!content.trim()}
+            className="h-8 w-8"
+            aria-label="Download Markdown"
+          >
+            <FileDown className="h-4 w-4" />
+          </Button>
+        </Tooltip>
+
+        {/* Download HTML */}
+        <Tooltip content="Download HTML" side="bottom">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleDownloadHtml}
+            disabled={downloadingHtml || !content.trim()}
+            className="h-8 w-8"
+            aria-label="Download HTML"
+          >
+            {downloadingHtml ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FileCode className="h-4 w-4" />
+            )}
+          </Button>
+        </Tooltip>
 
         {/* Export PDF */}
         <Tooltip content="Export PDF" side="bottom">
