@@ -62,7 +62,7 @@ crapify.md/
     └── markdown/         # shared markdown pipeline (@crapify/markdown)
 ```
 
-The frontend and backend are separate processes. Vite proxies `/api/*` requests to the NestJS server, so to the browser everything looks like one origin.
+The frontend and backend are separate processes. In development, Vite proxies `/api/*` requests to the NestJS server. In Docker, both containers run behind their own ports and the browser calls each directly.
 
 ---
 
@@ -91,7 +91,9 @@ corepack prepare pnpm@10.30.1 --activate
 
 ---
 
-## Getting Started
+## Running Locally
+
+### Option A — pnpm (recommended for development)
 
 ```bash
 git clone https://github.com/aakamshpm/crapify.md.git
@@ -106,31 +108,53 @@ pnpm dev
 | Web | http://localhost:5173 |
 | API | http://localhost:3000 |
 
+### Option B — Docker
+
+```bash
+pnpm docker:up
+```
+
+| App | URL                   |
+| --- | --------------------- |
+| Web | http://localhost:5173 |
+| API | http://localhost:3000 |
+
 ---
 
 ## Scripts
 
 Run from the repo root:
 
-| Command      | Description                                      |
-| ------------ | ------------------------------------------------ |
-| `pnpm dev`   | Start all apps in development mode               |
-| `pnpm build` | Build all apps and packages (respects dep order) |
-| `pnpm lint`  | Lint all apps and packages                       |
-| `pnpm clean` | Remove all `dist/`, `node_modules/`, build cache |
+| Command              | Description                                |
+| -------------------- | ------------------------------------------ |
+| `pnpm dev`           | Start all apps in development mode         |
+| `pnpm build`         | Build all apps and packages                |
+| `pnpm lint`          | Lint all apps and packages                 |
+| `pnpm clean`         | Remove all `dist/`, `node_modules/`, cache |
+| `pnpm docker:up`     | Build and start both containers            |
+| `pnpm docker:down`   | Stop and remove containers                 |
+| `pnpm docker:logs`   | Stream logs from all containers            |
+| `pnpm docker:up:api` | Build and start the API container only     |
+| `pnpm docker:up:web` | Build and start the web container only     |
 
 ---
 
 ## Environment Variables
 
-No `.env` file needed for local development — defaults work out of the box.
-
-Optional overrides for `apps/api`:
+### `apps/api`
 
 | Variable      | Default                 | Description         |
 | ------------- | ----------------------- | ------------------- |
 | `PORT`        | `3000`                  | API server port     |
 | `CORS_ORIGIN` | `http://localhost:5173` | Allowed CORS origin |
+
+### `apps/web` (build-time, Vite bakes these into the bundle)
+
+| Variable       | Default | Description                                     |
+| -------------- | ------- | ----------------------------------------------- |
+| `VITE_API_URL` | `""`    | Full URL of the API (empty = same-origin proxy) |
+
+No `.env` file needed for local development — defaults work out of the box.
 
 ---
 

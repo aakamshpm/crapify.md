@@ -56,7 +56,9 @@ export function AppHeader() {
 
     setExporting(true)
     try {
-      const res = await fetch('/api/export/pdf', {
+      const apiBase = import.meta.env.VITE_API_URL ?? ''
+
+      const res = await fetch(`${apiBase}/api/export/pdf`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ markdown: trimmed }),
